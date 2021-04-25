@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:memento_app/blocs/nav_bloc.dart';
-import 'package:memento_app/screen/add_activity_screen.dart';
+import 'package:memento_app/constants%20/general_app_constants.dart';
+import 'package:memento_app/constants%20/memento_icons.dart';
+import 'package:memento_app/screen/nav/dashboard/dashboard_screen.dart';
+import 'package:memento_app/screen/nav/nav_fab_config.dart';
 import 'package:memento_app/screen/profile_screen.dart';
 
-import 'atividades_screen.dart';
-import 'brain_fitness_screen.dart';
-import 'dashboard_screen.dart';
-import 'medicamentos_screen.dart';
+import 'activity/activities_screen.dart';
+import 'brain_fitness/brain_fitness_screen.dart';
+import 'medicine/medicine_screen.dart';
 
 class Nav extends StatefulWidget {
   @override
@@ -21,8 +24,8 @@ class _NavState extends State<Nav> {
 
   List<Widget> _optionScreen = [
     DashboardScreen(),
-    ActivitiesScreen(),
-    MedicalScreen(),
+    ActivityScreen(),
+    MedicineScreen(),
     BrainFitnessScreen()
   ];
 
@@ -49,19 +52,38 @@ class _NavState extends State<Nav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+
       appBar: AppBar(
-        title: Text("Memento"),
+        title: Row(
+          children: [
+            Icon(
+              MementoIcons.bxbrain,
+              color: _itemSelected == 0 ? GeneralAppColor.softBlack : Colors.white,
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Text("MEMENTO",
+                style: TextStyle(
+                    color: _itemSelected == 0 ? GeneralAppColor.softBlack : Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "Poppins",
+                    fontStyle: FontStyle.normal,
+                    fontSize: 18.0),
+                textAlign: TextAlign.left),
+          ],
+        ),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.calendar_today_sharp),
+            icon: Icon(FontAwesomeIcons.calendarAlt),
             onPressed: () {},
           ),
-          SizedBox(
-            width: 15,
-          ),
           IconButton(
-            icon: Icon(Icons.account_circle),
+            icon: Icon(FontAwesomeIcons.user),
             onPressed: () {
               Navigator.push(
                   context,
@@ -69,19 +91,19 @@ class _NavState extends State<Nav> {
                       builder: (BuildContext context) => ProfileScreen()));
             },
           ),
-          SizedBox(width: 10)
         ],
       ),
 
       //TODO RETORNAR apenas o resultado
       body: Center(child: _optionScreen.elementAt(_itemSelected)),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: GeneralAppColor.black,
         type: BottomNavigationBarType.fixed,
         items: [
-          createNavItem(Icons.dashboard, "Dashboard"),
-          createNavItem(Icons.fitness_center, "Atividades"),
-          createNavItem(Icons.medical_services, "Medicamentos"),
-          createNavItem(Icons.psychology, "Brain Fitness"),
+          createNavItem(MementoIcons.bxshomeheart, "Home"),
+          createNavItem(MementoIcons.iconawesomewalking, "Atividades"),
+          createNavItem(MementoIcons.iconmapdoctor, "Medicamentos"),
+          createNavItem(MementoIcons.bxbrain, "Brain Fitness"),
         ],
         currentIndex: _itemSelected,
         onTap: (value) {
@@ -94,21 +116,7 @@ class _NavState extends State<Nav> {
         initialData: false,
         stream: _navBloc.stateStream,
         builder: (context, snapshot) {
-          return Visibility(
-            visible: snapshot.data,
-            child: FloatingActionButton(
-              child: Icon(
-                Icons.add,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            AddActivityScreen()));
-              },
-            ),
-          );
+          return MementoFab(visible: snapshot.data);
         },
       ),
     );

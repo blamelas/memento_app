@@ -40,6 +40,9 @@ dependencies:
   font_awesome_flutter: ^8.10.0
   community_material_icon: ^5.4.55
 
+  auto_size_text: ^2.1.0
+
+
 
 
 dev_dependencies:
@@ -63,9 +66,9 @@ flutter:
         - asset: fonts/MementoIcons.ttf
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/vector-creator.png
-    - images/image1.png
-    - images/umgif.gif
+    - images/intro1.png
+    - images/intro2.png
+    - images/intro3.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
