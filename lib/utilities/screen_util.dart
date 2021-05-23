@@ -11,3 +11,4 @@ class ScreenSizeUtil {
     this._mediaQuery = MediaQuery.of(context).size;
   }
 }
+
